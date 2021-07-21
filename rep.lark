@@ -1,0 +1,32 @@
+// prog: heady? repy+ footy?
+// heady: line+
+// footy: line+
+// repy: DOTS
+// line: literal
+
+prog: headx? repx footx?// actually line, not prog
+headx: CHAR
+footx: CHAR
+repx: "\"" _body "\"" dots
+
+_body: static? (curlies static)+ curlies?
+curlies: "{" CHAR "}"
+
+static: CHAR
+CHAR: /[^\".:{}]+/
+
+dots: "." (slice|".") "."
+slice: start_slice? ":" end_slice? (":" step_slice?)?
+
+start_slice: _num
+end_slice: _num
+step_slice: _num
+
+_num: SIGN? DIGIT
+SIGN: "+"|"-"
+DIGIT: "0"|"1"|"2"|"3"|"4"|"5"|"6"|"7"|"8"|"9"
+
+_DOTS: "..."
+_QUOTE: "\""
+
+%ignore " "
