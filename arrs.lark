@@ -5,28 +5,32 @@
 // line: literal
 
 prog: headx? repx footx?// actually line, not prog
-headx: CHAR
-footx: CHAR
-repx: "\"" _body "\"" dots
+headx: CHAR+
+footx: CHAR+
+repx: _QUOTE _body dots
 
-_body: static? (curlies static)+ curlies?
-curlies: "{" CHAR "}"
+_body: static_beg? (curlies | static_mid)+ static_end?
+curlies: "{" CHAR? "}"
 
-static: CHAR
-CHAR: /[^\".:{}]+/
+static_beg: _static
+static_mid: _static
+static_end: _static
+_static: CHAR
+CHAR: /[^.:{}]+/
 
-dots: "." (slice|".") "."
-slice: start_slice? ":" end_slice? (":" step_slice?)?
+dots: "." (_slice|"."?) "."
+_slice: start_slice? ":" end_slice? (":" step_slice?)?
 
 start_slice: _num
 end_slice: _num
 step_slice: _num
 
-_num: SIGN? DIGIT
+_num: INT
+// _num: SIGN? DIGIT
 SIGN: "+"|"-"
 DIGIT: "0"|"1"|"2"|"3"|"4"|"5"|"6"|"7"|"8"|"9"
 
 _DOTS: "..."
-_QUOTE: "\""
+_QUOTE: "."
 
-%ignore " "
+%import common.INT
