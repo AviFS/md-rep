@@ -12,22 +12,41 @@ out = ""
 
 inp = demo1
 
-lst1 = ["", "*arr", " ", ""]
-lst2 = ["[", "*arr", ", ", "]"]
-lst3 = ["| ", "*arr", " | ", " |"]
+lst1 = ["", ("", "*arr", " "), ""]
+lst2 = ["[", ("", "*arr", ", "), "]"]
+lst3 = ["| ", ("", "*arr", " | "), " |"]
+lst4 = ["echo '", ("", "*arr", " "), "' | python jelly.py"]
+lst5 = ["python jelly.py ", ("-", "*arr", " ")]
 
-lst = lst2
+lst = lst4
 
-out+=str(lst[0])
 
-for i in range(len(arr)):
-    out += str(arr[i])
-    if i!=len(arr)-1:
-        out += str(lst[2])
+for elem in lst:
 
-out+=str(lst[3])
+    if isinstance(elem, tuple):
+        for i in range(len(arr)):
+            out += elem[0]
+            # assumes elem[1] == *arr
+            assert elem[1] == "*arr"
+            out += str(arr[i])
+            if i!=len(arr)-1:
+                out += elem[2]
+
+    else:
+        out += elem
 
 print(out)
+
+# out+=str(lst[0])
+
+# for i in range(len(arr)):
+#     out += str(arr[i])
+#     if i!=len(arr)-1:
+#         out += str(lst[2])
+
+# out+=str(lst[3])
+
+# print(out)
 # i=0
 # while i < len(inp):
 #     if inp[i]=="." and not is_rep:
